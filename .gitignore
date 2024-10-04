@@ -19,9 +19,6 @@ yarn-error.log*
 # SQLite database
 *.db
 
-# Prisma migration artifacts
-prisma/migrations/
-
 # Optional: OS-specific files
 .DS_Store
 Thumbs.db
