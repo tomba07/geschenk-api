@@ -10,9 +10,7 @@ app.get("/projects", (req, res) => {
     if (err) {
       return res.status(500).json({ error: err.message });
     }
-    res.json({
-      projects: rows
-    });
+    res.json(rows);
   });
 });
 
