@@ -33,10 +33,9 @@ app.get("/projects/:id", async (req: Request, res: Response) => {
 });
 
 app.post("/projects", async (req: Request, res: Response) => {
-  const { name } = req.body;
   try {
     const newProject = await prisma.project.create({
-      data: { name },
+      data: req.body,
     });
     res.status(201).json(newProject);
   } catch (err: any) {
