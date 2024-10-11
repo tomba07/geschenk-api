@@ -26,11 +26,11 @@ model Participant {
 }
 
 model Assignment {
-    id                   String       @id @default(cuid())
-    project              Project      @relation(fields: [projectId], references: [id], onDelete: Cascade)
-    projectId            Int
-    from                 Participant  @relation("giver", fields: [fromName, projectId], references: [name, projectId], onDelete: Cascade)
-    fromName             String
-    to                   Participant  @relation("receiver", fields: [toName, projectId], references: [name, projectId], onDelete: Cascade)
-    toName               String
+    id        String      @id @default(cuid())
+    project   Project     @relation(fields: [projectId], references: [id], onDelete: Cascade)
+    projectId Int
+    from      Participant @relation("giver", fields: [fromName, projectId], references: [name, projectId], onDelete: Cascade)
+    fromName  String
+    to        Participant @relation("receiver", fields: [toName, projectId], references: [name, projectId], onDelete: Cascade)
+    toName    String
 }
