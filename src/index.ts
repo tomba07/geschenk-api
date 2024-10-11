@@ -7,7 +7,6 @@ const PORT = process.env.PORT || 3000;
 
 app.use(express.json());
 
-// Endpoint to get all projects
 app.get("/projects", async (req: Request, res: Response) => {
   try {
     const projects = await prisma.project.findMany();
@@ -21,9 +20,10 @@ app.get("/projects/:id", async (req: Request, res: Response) => {
   const { id } = req.params;
   try {
     const project = await prisma.project.findUnique({
-      where: { id: Number(id) }, // Ensure id is converted to a number
+      where: { id: Number(id) },
       include: {
-        participants: true, // Assuming 'participants' is the correct relation
+        participants: true,
+        assignments: true,
       },
     });
     res.json(project);
@@ -32,7 +32,6 @@ app.get("/projects/:id", async (req: Request, res: Response) => {
   }
 });
 
-// Endpoint to create a new project
 app.post("/projects", async (req: Request, res: Response) => {
   const { name } = req.body;
   try {
@@ -73,7 +72,6 @@ app.post("/assignments", async (req: Request, res: Response) => {
   }
 });
 
-// Start the server
 app.listen(PORT, () => {
   console.log(`Server is running on http://localhost:${PORT}`);
 });
