@@ -60,6 +60,19 @@ app.post("/participants", async (req: Request, res: Response) => {
   }
 });
 
+app.post("/assignments", async (req: Request, res: Response) => {
+  const assignments = req.body;
+
+  try {
+    const result = await prisma.assignment.createMany({
+      data: assignments,
+    });
+    res.status(201).json(result);
+  } catch (err: any) {
+    res.status(500).json({ error: err.message });
+  }
+});
+
 // Start the server
 app.listen(PORT, () => {
   console.log(`Server is running on http://localhost:${PORT}`);
