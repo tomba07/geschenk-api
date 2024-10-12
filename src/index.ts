@@ -71,6 +71,19 @@ app.post("/assignments", async (req: Request, res: Response) => {
   }
 });
 
+//API for deleting all assignments for a project
+app.delete("/assignments/:projectId", async (req: Request, res: Response) => {
+  const { projectId } = req.params;
+  try {
+    await prisma.assignment.deleteMany({
+      where: { projectId: Number(projectId) },
+    });
+    res.status(204).end();
+  } catch (err: any) {
+    res.status(500).json({ error: err.message });
+  }
+});
+
 app.listen(PORT, () => {
   console.log(`Server is running on http://localhost:${PORT}`);
 });
