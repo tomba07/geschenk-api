@@ -7,6 +7,7 @@ async function main() {
   const project = await prisma.project.create({
     data: {
       name: "Secret Santa",
+      assigned: true,
       participants: {
         create: [{ name: "Alice" }, { name: "Bob" }, { name: "Charlie" }],
       },
