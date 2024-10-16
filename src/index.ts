@@ -70,6 +70,18 @@ app.post("/participants", async (req: Request, res: Response) => {
   }
 });
 
+app.delete("/participants/:id", async (req: Request, res: Response) => {
+  const { name, projectId } = req.params;
+  try {
+    await prisma.participant.delete({
+      where: { name_projectId: { name, projectId: Number(projectId) } },
+    });
+    res.status(204).end();
+  } catch (err: any) {
+    res.status(500).json({ error: err.message });
+  }
+});
+
 app.post("/assignments", async (req: Request, res: Response) => {
   const assignments = req.body;
 
