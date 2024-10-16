@@ -83,9 +83,15 @@ app.delete("/projects/:projectId/participants/:name", async (req: Request, res: 
 });
 
 app.post("/assignments", async (req: Request, res: Response) => {
-  const assignments = req.body;
+  const assignments = req.body.assignments,
+    projectId = req.body.projectId;
 
   try {
+    //set assigned flag on project
+    await prisma.project.update({
+      where: { id: projectId },
+      data: { assigned: true },
+    });
     const result = await prisma.assignment.createMany({
       data: assignments,
     });
