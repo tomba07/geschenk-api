@@ -43,6 +43,18 @@ app.post("/projects", async (req: Request, res: Response) => {
   }
 });
 
+app.delete("/projects/:id", async (req: Request, res: Response) => {
+  const { id } = req.params;
+  try {
+    await prisma.project.delete({
+      where: { id: Number(id) },
+    });
+    res.status(204).end();
+  } catch (err: any) {
+    res.status(500).json({ error: err.message });
+  }
+});
+
 app.post("/participants", async (req: Request, res: Response) => {
   const { projectId, name } = req.body;
   try {
