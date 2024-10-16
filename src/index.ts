@@ -70,7 +70,7 @@ app.post("/participants", async (req: Request, res: Response) => {
   }
 });
 
-app.delete("/participants/:id", async (req: Request, res: Response) => {
+app.delete("/projects/:projectId/participants/:name", async (req: Request, res: Response) => {
   const { name, projectId } = req.params;
   try {
     await prisma.participant.delete({
