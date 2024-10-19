@@ -7,9 +7,23 @@ const PORT = process.env.PORT || 3000;
 
 app.use(express.json());
 
+app.post('/users', async (req: Request, res: Response) => {
+  const { id } = req.body;
+  try {
+    const newUser = await prisma.user.create({data: {id}});
+    res.status(201).json(newUser);
+  } catch (err: any) {
+    res.status(500).json({ error: err.message });
+  }
+});
+
 app.get("/projects", async (req: Request, res: Response) => {
   try {
-    const projects = await prisma.project.findMany();
+    const projects = await prisma.project.findMany({
+      where: {
+        userId: req.headers["x-user-id"] as string,
+      },
+    });
     res.json(projects);
   } catch (err: any) {
     res.status(500).json({ error: err.message });
