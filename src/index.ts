@@ -115,7 +115,6 @@ app.post("/assignments", async (req: Request, res: Response) => {
   }
 });
 
-//API for deleting all assignments for a project
 app.delete("/assignments/:projectId", async (req: Request, res: Response) => {
   const { projectId } = req.params;
   try {
