@@ -7,8 +7,15 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
+model User {
+    id String @id @default(cuid())
+    projects Project[]
+}
+
 model Project {
     id           Int           @id @default(autoincrement())
+    user         User          @relation(fields: [userId], references: [id], onDelete: Cascade)
+    userId       String
     name         String
     assigned     Boolean       @default(false)
     participants Participant[]
