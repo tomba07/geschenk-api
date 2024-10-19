@@ -10,7 +10,7 @@ app.use(express.json());
 app.post('/users', async (req: Request, res: Response) => {
   const { id } = req.body;
   try {
-    const newUser = await prisma.user.create({data: {id}});
+    const newUser = await prisma.user.create({ data: { id } });
     res.status(201).json(newUser);
   } catch (err: any) {
     res.status(500).json({ error: err.message });
@@ -49,7 +49,7 @@ app.get("/projects/:id", async (req: Request, res: Response) => {
 app.post("/projects", async (req: Request, res: Response) => {
   try {
     const newProject = await prisma.project.create({
-      data: req.body,
+      data: { ...req.body, userId: req.headers["x-user-id"] as string },
     });
     res.status(201).json(newProject);
   } catch (err: any) {
