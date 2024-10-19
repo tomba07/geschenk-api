@@ -49,7 +49,7 @@ app.get("/projects/:id", async (req: Request, res: Response) => {
 app.post("/projects", async (req: Request, res: Response) => {
   try {
     const newProject = await prisma.project.create({
-      data: { ...req.body, userId: req.headers["x-user-id"] as string },
+      data: req.body,
     });
     res.status(201).json(newProject);
   } catch (err: any) {
