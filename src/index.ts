@@ -7,10 +7,10 @@ const PORT = process.env.PORT || 3000;
 
 app.use(express.json());
 
-app.post('/users', async (req: Request, res: Response) => {
+app.post("/users", async (req: Request, res: Response) => {
   const { id } = req.body;
   try {
-    const newUser = await prisma.user.create({ data: { id } });
+    const newUser = await prisma.user.upsert({ where: { id: id }, create: { id }, update: { id } });
     res.status(201).json(newUser);
   } catch (err: any) {
     res.status(500).json({ error: err.message });
@@ -18,6 +18,10 @@ app.post('/users', async (req: Request, res: Response) => {
 });
 
 app.get("/projects", async (req: Request, res: Response) => {
+  if (!req.headers["x-user-id"]) {
+    res.json([]);
+    return;
+  }
   try {
     const projects = await prisma.project.findMany({
       where: {
