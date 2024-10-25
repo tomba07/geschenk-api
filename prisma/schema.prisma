@@ -8,8 +8,9 @@ datasource db {
 }
 
 model User {
-    id       String    @id @default(cuid())
-    projects Project[]
+    id           String        @id @default(cuid())
+    projects     Project[]
+    participants Participant[] @relation("user") // The participant identities of the user
 }
 
 model Project {
@@ -26,6 +27,8 @@ model Participant {
     name                String
     project             Project      @relation(fields: [projectId], references: [id], onDelete: Cascade)
     projectId           String
+    user                User?        @relation("user", fields: [userId], references: [id])
+    userId              String?
     createdAt           DateTime     @default(now())
     assignmentReceiving Assignment[] @relation("receiver")
     assignmentGiving    Assignment[] @relation("giver")
