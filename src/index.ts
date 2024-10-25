@@ -38,7 +38,7 @@ app.get("/projects/:id", async (req: Request, res: Response) => {
   const { id } = req.params;
   try {
     const project = await prisma.project.findUnique({
-      where: { id: Number(id) },
+      where: { id: id },
       include: {
         participants: true,
         assignments: true,
@@ -65,7 +65,7 @@ app.delete("/projects/:id", async (req: Request, res: Response) => {
   const { id } = req.params;
   try {
     await prisma.project.delete({
-      where: { id: Number(id) },
+      where: { id: id },
     });
     res.status(204).end();
   } catch (err: any) {
@@ -78,7 +78,7 @@ app.post("/participants", async (req: Request, res: Response) => {
   try {
     const newParticipant = await prisma.participant.create({
       data: {
-        projectId: Number(projectId),
+        projectId: projectId,
         name,
       },
     });
@@ -92,7 +92,7 @@ app.delete("/projects/:projectId/participants/:name", async (req: Request, res: 
   const { name, projectId } = req.params;
   try {
     await prisma.participant.delete({
-      where: { name_projectId: { name, projectId: Number(projectId) } },
+      where: { name_projectId: { name, projectId: projectId } },
     });
     res.status(204).end();
   } catch (err: any) {
@@ -123,7 +123,7 @@ app.delete("/assignments/:projectId", async (req: Request, res: Response) => {
   const { projectId } = req.params;
   try {
     await prisma.assignment.deleteMany({
-      where: { projectId: Number(projectId) },
+      where: { projectId: projectId },
     });
     res.status(204).end();
   } catch (err: any) {
