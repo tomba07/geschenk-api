@@ -3,39 +3,53 @@ import { PrismaClient } from "@prisma/client";
 const prisma = new PrismaClient();
 
 async function main() {
-  // Create a few projects
+  // Create a user
+  const user = await prisma.user.create({
+    data: {
+      // Add fields if needed, e.g., name, email, etc.
+    },
+  });
+
+  console.log("Created user:", user);
+
+  // Create a project with the created user
   const project = await prisma.project.create({
     data: {
       name: "Secret Santa",
       assigned: true,
+      user: {
+        connect: { id: user.id }, // Connect the project to the user
+      },
       participants: {
         create: [{ name: "Alice" }, { name: "Bob" }, { name: "Charlie" }],
       },
     },
   });
 
-  console.log("Seeded projects:", { project });
+  console.log("Seeded project with participants:", { project });
 
-  const projectId = project.id;
+  // Create assignments for participants
   const assignments = await prisma.assignment.createMany({
     data: [
       {
-        projectId: projectId,
+        projectId: project.id,
         fromName: "Alice",
         toName: "Bob",
       },
       {
-        projectId: projectId,
+        projectId: project.id,
         fromName: "Bob",
         toName: "Charlie",
       },
       {
-        projectId: projectId,
+        projectId: project.id,
         fromName: "Charlie",
         toName: "Alice",
       },
     ],
   });
+
+  console.log("Created assignments:", { assignments });
 }
 
 main()
